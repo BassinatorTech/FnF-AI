@@ -6,11 +6,16 @@
 
 import numpy
 import re
+import time
 from PIL import ImageGrab
 import cv2
-# import time
 import keyboard
 import pyautogui
+
+
+def key(key):
+    keyboard.press(key)
+    keyboard.release(key)
 
 
 # REGION-OF-INTEREST
@@ -30,7 +35,6 @@ def process_img(img):
     return processed
 
 
-# COMPUTER VISION
 while True:
     screen = numpy.array(ImageGrab.grab(bbox=(0, 0, 1920, 1080)))
     new_screen = process_img(screen)

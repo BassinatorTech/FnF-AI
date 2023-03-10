@@ -13,11 +13,6 @@ import keyboard
 import pyautogui
 
 
-def key(key):
-    keyboard.press(key)
-    keyboard.release(key)
-
-
 # REGION-OF-INTEREST
 def roi(img, vertices):
     mask = numpy.zeros_like(img)
@@ -30,8 +25,9 @@ def process_img(img):
     processed = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     processed = cv2.Canny(processed, threshold1=200, threshold2=300)
     processed = cv2.GaussianBlur(processed, (5, 5), 0)
-    vertices = numpy.array([[960, 900], [960, 0], [1920, 0], [1920, 900]])
+    vertices = numpy.array([[960, 900], [960, 110], [1920, 110], [1920, 900]])
     processed = roi(processed, [vertices])
+    cv2.rectangle(processed, (960, 150), (1500, 350), (255, 255, 255), 5)
     return processed
 
 

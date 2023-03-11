@@ -13,6 +13,11 @@ import keyboard
 import pyautogui
 
 
+def key(key):
+    keyboard.press(key)
+    keyboard.release(key)
+
+
 # REGION-OF-INTEREST
 def roi(img, vertices):
     mask = numpy.zeros_like(img)
@@ -22,7 +27,7 @@ def roi(img, vertices):
 
 
 def process_img(img):
-    processed = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    processed = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     processed = cv2.Canny(processed, threshold1=200, threshold2=300)
     processed = cv2.GaussianBlur(processed, (5, 5), 0)
     vertices = numpy.array([[960, 900], [960, 110], [1920, 110], [1920, 900]])
@@ -32,25 +37,18 @@ def process_img(img):
 
 
 while True:
-    screen = numpy.array(ImageGrab.grab(bbox=(0, 0, 1920, 1080)))
+    screen = numpy.array(ImageGrab.grab(bbox=(900, 0, 1920, 1080)))
     # new_screen = process_img(screen)
-    file = cv2.imread("starter_img/up_arrow.png")
-    query = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-    train = cv2.cvtColor(file, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+    template = cv2.imread("starter_img/arrow_bar_1.png", 0)
+    w, h = template.shape[::-1]
+    threshold = 0.8
+    res = cv2.matchTemplate(gray, template, cv2.TM_CCOEFF_NORMED)
+    loc = numpy.where(res >= threshold)
+    for pt in zip(*loc[:: -1]):
+        cv2.rectangle(screen, pt, (pt[0] + w, pt[1] + h), (0, 255, 255), 2)
 
-    orb = cv2.ORB_create()
-
-    query_kp, query_desc = orb.detectAndCompute(query, None)
-    train_kp, train_desc = orb.detectAndCompute(train, None)
-
-    matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-    matches = matcher.match(query_desc, train_desc)
-    matches = sorted(matches, key=lambda x: x.distance)
-
-    final = cv2.drawMatches(screen, query_kp, file,
-                            train_kp, matches[:10], None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-
-    cv2.imshow("window", cv2.cvtColor(final, cv2.COLOR_BGR2GRAY))
+    cv2.imshow("window", cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY))
     if cv2.waitKey(25) & 0xFF == ord("q"):
         cv2.destroyAllWindows()
         break

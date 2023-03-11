@@ -13,11 +13,6 @@ import keyboard
 import pyautogui
 
 
-def key(key):
-    keyboard.press(key)
-    keyboard.release(key)
-
-
 # REGION-OF-INTEREST
 def roi(img, vertices):
     mask = numpy.zeros_like(img)
@@ -35,18 +30,23 @@ def process_img(img):
     cv2.rectangle(processed, (960, 150), (1500, 350), (255, 255, 255), 5)
     return processed
 
-
-while True:
-    screen = numpy.array(ImageGrab.grab(bbox=(900, 0, 1920, 1080)))
-    # new_screen = process_img(screen)
+def template_matching(screen, img):
     gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread("starter_img/arrow_bar_1.png", 0)
+    template = cv2.imread(img, 0)
     w, h = template.shape[::-1]
     threshold = 0.8
     res = cv2.matchTemplate(gray, template, cv2.TM_CCOEFF_NORMED)
     loc = numpy.where(res >= threshold)
     for pt in zip(*loc[:: -1]):
         cv2.rectangle(screen, pt, (pt[0] + w, pt[1] + h), (0, 255, 255), 2)
+
+        
+while True:
+    screen = numpy.array(ImageGrab.grab(bbox=(900, 0, 1920, 1080)))
+    up = template_matching(screen, "starter_img/up_arrow_1.png")
+    down = template_matching(screen, "starter_img/down_arrow_1.png")
+    right = template_matching(screen, "starter_img/right_arrow_1.png")
+    left = template_matching(screen, "starter_img/left_arrow_1.png")
 
     cv2.imshow("window", cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY))
     if cv2.waitKey(25) & 0xFF == ord("q"):

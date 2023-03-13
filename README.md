@@ -5,6 +5,8 @@ An AI that'll play Friday Night Funkin'
 > sentdex's channel: https://www.youtube.com/@sentdex
 >
 > ClarityCoders' channel: https://www.youtube.com/@ClarityCoders
+>
+> **FYI, week 6 doesn't work due to different colors, but will be fixed soon.**
 
 ## How it works
 It works by having four reference points on a 1920x1500 image (1920x1500 because it won't allow anything over 1080): ![Screenshot (67)](https://user-images.githubusercontent.com/109166734/224595841-63ef9835-e16a-4da9-92fb-193a810322e3.png)

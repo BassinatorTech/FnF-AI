@@ -27,3 +27,17 @@ else:
 > and even if you can't figure it out, run **img.py** to see what the AI sees.
 > 
 > This was finished in four days (**3/8/23 - 3/12/23**)!
+
+## Execution
+- You will need Python installed on your computer to run this AI.
+- Once installed, save it in a directory, and run the code in the Command Prompt
+
+**Windows**
+```
+py main.py
+```
+
+**Mac & Linux**
+```
+python main.py
+```

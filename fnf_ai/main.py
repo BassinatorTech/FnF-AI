@@ -1,5 +1,5 @@
-import numpy
 import cv2
+import numpy
 import keyboard
 import pyautogui
 
@@ -42,6 +42,7 @@ while True:
     else:
         keyboard.release("right")
 
+    # If you want to see the computer's vision live
     # cv2.imshow("img", cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))
 
     if cv2.waitKey(25) & 0xFF == ord("q"):
